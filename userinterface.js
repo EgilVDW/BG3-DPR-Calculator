@@ -1,6 +1,6 @@
 let counter = 0;
 counter = counter.toString();
-
+ 
 //create button - input - button combination
 function createHtml(spanid, text, button1id, inputid, button2id){
     let minSpan = document.createElement("SPAN");
@@ -34,6 +34,7 @@ function createHtml(spanid, text, button1id, inputid, button2id){
     minInput.setAttribute("type", "text");
     minInput.setAttribute("id", inputid+counter);
     minInput.setAttribute("class", "inputfields");
+    minInput.setAttribute("value", 8);
 
     //button
     minButtonUp.setAttribute("type", "submit");
@@ -141,12 +142,45 @@ function hiddenInputs(inputid){
     let input = document.createElement("INPUT");
 
     //input
-    input.setAttribute("id", inputid);
+    input.setAttribute("id", inputid+counter);
     input.setAttribute("hidden", true);
 
     //apend
     document.body.appendChild(span);
     span.append(input);
+}
+
+//create tables and add cells if condition met
+let dprtable;
+let row;
+let th;
+let cell;
+function createDprTable(tdid){
+    dprtable = document.createElement("TABLE");
+    row = dprtable.insertRow();
+    th = document.createElement("TH");
+    th.textContent = "Attack #"+1;
+    cell = row.insertCell();
+    cell.setAttribute("id", tdid+counter);
+    row.appendChild(th);
+    row.appendChild(cell);
+    document.body.appendChild(dprtable);
+}
+
+createDprTable("damageAvgOutput");
+let attackCounter=1;
+
+function dprOutput(tdid){
+    if(counter>=1){
+        attackCounter++;
+        row = dprtable.insertRow();
+        th = document.createElement("TH");
+        th.textContent = "Attack #"+attackCounter;
+        cell = row.insertCell();
+        cell.setAttribute("id", tdid+counter);
+        row.appendChild(th);
+        row.appendChild(cell);
+    }
 }
 
 // call all calculator html element functions with their paramaters
@@ -156,8 +190,8 @@ function addAttack(){
     createHtml("minCritSpan", "Min. to crit", "minCritButtonDown", "critMin", "minCritButtonUp");
     createHtml("attackturnSpan", "Attacks/turn", "attackButtonDown", "attacksPerTurn", "attackButtonUp");
     
-    createDropdown("accuracyspan", "dropdown", "accuracytype", "Disadvantage", "Standard", "Advantage");
-    document.getElementById("accuracytype"+counter).selectedIndex = "1";
+    createDropdown("accuracyspan", "dropdown", "accuracyType", "Disadvantage", "Standard", "Advantage");
+    document.getElementById("accuracyType"+counter).selectedIndex = "1";
     
     chances("missspan", "Miss % chance", "missChancePctOutput");
     chances("hitspan", "Hit % chance", "hitChancePctOutput");
@@ -171,12 +205,36 @@ function addAttack(){
 
     hiddenInputs("hitChanceOutput");
     hiddenInputs("critChanceOutput");
+    dprOutput("damageAvgOutput");
 }
 
 //addattack button and call the addAttack function onclick
 let addAttackButton = document.createElement("BUTTON");
 addAttackButton.textContent = "add attack";
-addAttackButton.setAttribute("onclick", "addAttack()");
+addAttackButton.setAttribute("onclick", "addAttack();allEventListeners();");
 document.body.appendChild(addAttackButton);
+
+//damage pr round button and output
+let dmgoutput = document.createElement("DIV");
+let dmgoutputbtn = document.createElement("BUTTON");
+dmgoutputbtn.setAttribute("onclick", "getDamagePerRound();");
+dmgoutputbtn.textContent = "Total damage pr round";
+dmgoutput.setAttribute("id", "dmgprround");
+
+document.body.appendChild(dmgoutput);
+document.body.appendChild(dmgoutputbtn);
+
+let oneAttackVal;
+let temp;
+function getDamagePerRound(){
+    let sum = 0;
+    for(var i=0; i<=counter; i++){
+        oneAttackVal = parseInt(document.getElementById("damageAvgOutput"+i).innerText);
+        sum += oneAttackVal;
+        console.log(parseInt(document.getElementById("damageAvgOutput"+i).innerText));
+    }
+    dmgoutput.innerHTML = sum;
+}
+addAttack();
 
 
