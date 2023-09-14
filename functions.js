@@ -23,7 +23,7 @@ document.getElementById("accuracyType").addEventListener("change", () => {
     critChancePctOutput("critChancePctOutput"),
     missChancePctOutput("missChancePctOutput"),
     damageAvgOutput("damageAvgOutput")
-})
+});
 
 // event listener for target AC
 document.getElementById("targetAC").addEventListener("input", () => {
@@ -47,6 +47,7 @@ document.getElementById("critMin").addEventListener("input", () => {
     critChanceOutput("critChanceOutput"),
     hitChancePctOutput("hitChancePctOutput"),
     critChancePctOutput("critChancePctOutput"),
+    missChancePctOutput("missChancePctOutput"),
     damageAvgOutput("damageAvgOutput")
 });
 
@@ -65,7 +66,7 @@ function hitChanceOutput(outputID) {
     let attackBonus = parseInt(document.getElementById("attackBonus").value);
     // chance to hit with advantage (roll two dice instead of one and choose the highest number)
     if ( accuracyType == "advantage" ) {
-        let hitChance = 1 - (( targetAC - attackBonus - 1 ) * ( targetAC - attackBonus - 1 )) / 400;
+        hitChance = 1 - (( targetAC - attackBonus - 1 ) * ( targetAC - attackBonus - 1 )) / 400;
         // value limit
         if ( hitChance < 0.0025 ) {
             hitChance = 0.0025;
@@ -78,7 +79,7 @@ function hitChanceOutput(outputID) {
     }
     // chance to hit with disadvantage (roll two dice instead of one and choose the lowest number)
     else if (accuracyType == "disadvantage") {
-        let hitChance = (( 21 + attackBonus - targetAC ) * ( 21 + attackBonus - targetAC )) / 400;
+        hitChance = (( 21 + attackBonus - targetAC ) * ( 21 + attackBonus - targetAC )) / 400;
         // value limit
         if ( hitChance < 0.0025 ) {
             hitChance = 0.0025;
@@ -91,7 +92,7 @@ function hitChanceOutput(outputID) {
     }
     // normal chance to hit
     else {
-        let hitChance = ( 21 + attackBonus - targetAC ) / 20;
+        hitChance = ( 21 + attackBonus - targetAC ) / 20;
         // value limit
         if ( hitChance < 0.05 ) {
             hitChance = 0.05;
@@ -106,23 +107,23 @@ function hitChanceOutput(outputID) {
 
 // calculate chance to crit
 function critChanceOutput(outputID) {
-    let accuracyType = document.getElementById("accuracyType").value
+    let accuracyType = document.getElementById("accuracyType").value;
     let critMin = parseInt(document.getElementById("critMin").value);
     // chance to crit with advantage
     if ( accuracyType == "advantage" ) {
-        let critChance = 1 - ( 1 - ( 21 - critMin ) / 20 ) * ( 1 - ( 21 - critMin ) / 20 );
+        critChance = 1 - ( 1 - ( 21 - critMin ) / 20 ) * ( 1 - ( 21 - critMin ) / 20 );
         // output
         document.getElementById(outputID).value = critChance;
     }
     // chance to crit with disadvantage
     else if ( accuracyType == "disadvantage" ) {
-        let critChance = ( 21 - critMin ) * ( 21 - critMin ) / 400;
+        critChance = ( 21 - critMin ) * ( 21 - critMin ) / 400;
         // output
         document.getElementById(outputID).value = critChance;
     }
     // normal chance to crit
     else {
-        let critChance = ( 21 - critMin ) / 20;
+        critChance = ( 21 - critMin ) / 20;
         // output
         document.getElementById(outputID).value = critChance;
     }
@@ -130,27 +131,27 @@ function critChanceOutput(outputID) {
 
 // calculate chance to hit as a percentage (excludes crit chance)
 function hitChancePctOutput(outputID) {
-    let hitChance = parseInt(document.getElementById("hitChance").value);
-    let critChance = parseInt(document.getElementById("critChance").value);
-    let hitChancePct = ( hitChance - critChance ) * 100;
+    let hitChance = parseFloat(document.getElementById("hitChanceOutput").value);
+    let critChance = parseFloat(document.getElementById("critChanceOutput").value);
+    hitChancePct = ( hitChance - critChance ) * 100;
     // output
-    document.getElementById(outputID).value = hitChancePct;
+    document.getElementById(outputID).value = hitChancePct.toFixed(0);
 }
 
 // calculate chance to crit as a percentage
-function critChanceOutput(outputID) {
-    let critChance = parseInt(document.getElementById("critChance").value);
-    let critChancePct = critChance * 100;
+function critChancePctOutput(outputID) {
+    let critChance = parseFloat(document.getElementById("critChanceOutput").value);
+    critChancePct = critChance * 100;
     // output
-    document.getElementById(outputID).value = critChancePct;
+    document.getElementById(outputID).value = critChancePct.toFixed(0);
 }
 
 // calculate chance to miss as a percentage
 function missChancePctOutput(outputID) {
-    let hitChance = parseInt(document.getElementById("hitChance").value);
-    let missChancePct = ( 1 - hitChance ) * 100;
+    let hitChance = parseFloat(document.getElementById("hitChanceOutput").value);
+    missChancePct = ( 1 - hitChance ) * 100;
     // output
-    document.getElementById(outputID).value = missChancePct;
+    document.getElementById(outputID).value = missChancePct.toFixed(0);
 }
 
 // calculate damage per turn
@@ -163,7 +164,7 @@ function damageAvgOutput(outputID) {
     let damageOnMiss = parseInt(document.getElementById("damageOnMiss").value);
     let damageAvg = ( hitChance * ( damageRoll + damageBonus ) + critChance * ( damageRoll + damageBonusCrit + damageBonusCritMul ) + damageOnMiss * ( 1 - hitChance )) * attacksPerTurn;
     // output
-    document.getElementById(outputID).value = damageAvg;
+    document.getElementById(outputID).value = damageAvg.toFixed(2);
 }
 
 document.getElementById("hitChanceOutput").value = hitChance;
