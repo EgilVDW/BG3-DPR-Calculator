@@ -27,6 +27,7 @@ function createHtml(spanid, text, button1id, inputid, button2id){
     minButtonDown.setAttribute("type", "submit");
     minButtonDown.setAttribute("id", button1id+counter);
     minButtonDown.setAttribute("class", "buttons");
+    minButtonDown.setAttribute("onclick", "subButtonValue("+"'"+inputid+counter+"'"+")")
     minButtonDown.textContent = "<";
 
     //input
@@ -38,6 +39,7 @@ function createHtml(spanid, text, button1id, inputid, button2id){
     minButtonUp.setAttribute("type", "submit");
     minButtonUp.setAttribute("id", button2id+counter);
     minButtonUp.setAttribute("class", "buttons");
+    minButtonUp.setAttribute("onclick", "addButtonValue("+"'"+inputid+counter+"'"+")")
     minButtonUp.textContent = ">";
     
     //append
@@ -133,24 +135,42 @@ function damage(spanid, text, inputid, outputid){
     span.append(paragraph, inputfield, readinput);
 }
 
+//hidden input fields for temp calculations
+function hiddenInputs(inputid){
+    let span = document.createElement("SPAN");
+    let input = document.createElement("INPUT");
+
+    //input
+    input.setAttribute("id", inputid);
+    input.setAttribute("hidden", true);
+
+    //apend
+    document.body.appendChild(span);
+    span.append(input);
+}
+
 // call all calculator html element functions with their paramaters
 function addAttack(){
-    createHtml("minHitSpan", "Min. to hit", "minHitButtonDown", "minHitInput", "minHitButtonUp");
-    createHtml("minCritSpan", "Min. to crit", "minCritButtonDown", "minCritInput", "minCritButtonUp");
-    createHtml("attackturnSpan", "Attacks/turn", "attackButtonDown", "attackTurnInput", "attackButtonUp");
+    createHtml("tacSpan", "Target's armor class", "tacButtonDown", "targetAC", "tacButtonUp");
+    createHtml("abSpan", "Attack bonus", "abButtonDown", "attackBonus", "abButtonUp");
+    createHtml("minCritSpan", "Min. to crit", "minCritButtonDown", "critMin", "minCritButtonUp");
+    createHtml("attackturnSpan", "Attacks/turn", "attackButtonDown", "attacksPerTurn", "attackButtonUp");
     
     createDropdown("accuracyspan", "dropdown", "accuracytype", "Disadvantage", "Standard", "Advantage");
     document.getElementById("accuracytype"+counter).selectedIndex = "1";
     
-    chances("missspan", "Miss % chance", "miss");
-    chances("hitspan", "Hit % chance", "hit");
-    chances("critspan", "Crit % chance", "crit");
+    chances("missspan", "Miss % chance", "missChancePctOutput");
+    chances("hitspan", "Hit % chance", "hitChancePctOutput");
+    chances("critspan", "Crit % chance", "critChancePctOutput");
     
-    damage("dohspan", "Damage on hit", "dohinput", "dohoutput");
-    damage("adnotspan", "Additional damage NOT multiplied Critical hit", "adnotinput", "adnotoutput");
-    damage("dbnotmultispan", "Damage bonus on crit (not multiplied)", "dbnotmultiinput", "dbnotmultioutput");
-    damage("dbdicemultispan", "Damage bonus on crit (dice multiplied)", "dbdicemultiinput", "dbdicemultioutput");
-    damage("dmissspan", "Damage dealt on miss", "dmissinput", "dmissoutput");
+    damage("dohspan", "Damage on hit", "damageRoll", "damageRollAvg");
+    damage("adnotspan", "Additional damage NOT multiplied Critical hit", "damageBonus", "damageBonusAvg");
+    damage("dbnotmultispan", "Damage bonus on crit (not multiplied)", "damageBonusCrit", "damageBonusCritAvg");
+    damage("dbdicemultispan", "Damage bonus on crit (dice multiplied)", "damageBonusCritMul", "damageBonusCritMulAvg");
+    damage("dmissspan", "Damage dealt on miss", "damageOnMiss", "damageOnMissAvg");
+
+    hiddenInputs("hitChanceOutput");
+    hiddenInputs("critChanceOutput");
 }
 
 //addattack button and call the addAttack function onclick
@@ -158,8 +178,5 @@ let addAttackButton = document.createElement("BUTTON");
 addAttackButton.textContent = "add attack";
 addAttackButton.setAttribute("onclick", "addAttack()");
 document.body.appendChild(addAttackButton);
-
-
-
 
 
