@@ -121,13 +121,13 @@ function critChanceOutput(outputID) {
     let accuracyType = document.getElementById("accuracyType"+counter).value;
     let critMin = parseInt(document.getElementById("critMin"+counter).value);
     // chance to crit with advantage
-    if ( accuracyType == "advantage" ) {
+    if ( accuracyType == "Advantage" ) {
         critChance = 1 - ( 1 - ( 21 - critMin ) / 20 ) * ( 1 - ( 21 - critMin ) / 20 );
         // output
         document.getElementById(outputID).value = critChance;
     }
     // chance to crit with disadvantage
-    else if ( accuracyType == "disadvantage" ) {
+    else if ( accuracyType == "Disadvantage" ) {
         critChance = ( 21 - critMin ) * ( 21 - critMin ) / 400;
         // output
         document.getElementById(outputID).value = critChance;
@@ -146,7 +146,7 @@ function hitChancePctOutput(outputID) {
     let critChance = parseFloat(document.getElementById("critChanceOutput"+counter).value);
     hitChancePct = ( hitChance - critChance ) * 100;
     // output
-    document.getElementById(outputID).value = hitChancePct.toFixed(0);
+    document.getElementById(outputID).value = hitChancePct.toFixed(2);
 }
 
 // calculate chance to crit as a percentage
@@ -154,7 +154,7 @@ function critChancePctOutput(outputID) {
     let critChance = parseFloat(document.getElementById("critChanceOutput"+counter).value);
     critChancePct = critChance * 100;
     // output
-    document.getElementById(outputID).value = critChancePct.toFixed(0);
+    document.getElementById(outputID).value = critChancePct.toFixed(2);
 }
 
 // calculate chance to miss as a percentage
@@ -162,7 +162,7 @@ function missChancePctOutput(outputID) {
     let hitChance = parseFloat(document.getElementById("hitChanceOutput"+counter).value);
     missChancePct = ( 1 - hitChance ) * 100;
     // output
-    document.getElementById(outputID).value = missChancePct.toFixed(0);
+    document.getElementById(outputID).value = missChancePct.toFixed(2);
 }
 
 function avgRoll (s, m, n, f, a) {
