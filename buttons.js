@@ -3,6 +3,7 @@ function subButtonValue(inputid){
     parseInt(theIncreaseField);
     theIncreaseField--;
     document.getElementById(inputid).value = theIncreaseField.toString();
+    allOutputs();
 }
 
 function addButtonValue(inputid){
@@ -10,5 +11,5 @@ function addButtonValue(inputid){
     parseInt(theIncreaseField);
     theIncreaseField++;
     document.getElementById(inputid).value = theIncreaseField.toString();
+    allOutputs();
 }
-

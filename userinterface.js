@@ -34,7 +34,6 @@ function createHtml(spanid, text, button1id, inputid, button2id){
     minInput.setAttribute("type", "text");
     minInput.setAttribute("id", inputid+counter);
     minInput.setAttribute("class", "inputfields");
-    minInput.setAttribute("value", 8);
 
     //button
     minButtonUp.setAttribute("type", "submit");
@@ -206,6 +205,7 @@ function addAttack(){
     hiddenInputs("hitChanceOutput");
     hiddenInputs("critChanceOutput");
     dprOutput("damageAvgOutput");
+    initialValues();
 }
 
 //addattack button and call the addAttack function onclick
@@ -236,5 +236,3 @@ function getDamagePerRound(){
     dmgoutput.innerHTML = sum;
 }
 addAttack();
-
-
