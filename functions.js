@@ -76,7 +76,7 @@ function hitChanceOutput(outputID) {
     let targetAC = parseInt(document.getElementById("targetAC"+counter).value);
     let attackBonus = parseInt(document.getElementById("attackBonus"+counter).value);
     // chance to hit with advantage (roll two dice instead of one and choose the highest number)
-    if ( accuracyType == "advantage" ) {
+    if ( accuracyType == "Advantage" ) {
         hitChance = 1 - (( targetAC - attackBonus - 1 ) * ( targetAC - attackBonus - 1 )) / 400;
         // value limit
         if ( hitChance < 0.0025 ) {
@@ -89,7 +89,7 @@ function hitChanceOutput(outputID) {
         document.getElementById(outputID).value = hitChance;
     }
     // chance to hit with disadvantage (roll two dice instead of one and choose the lowest number)
-    else if ( accuracyType == "disadvantage" ) {
+    else if ( accuracyType == "Disadvantage" ) {
         hitChance = (( 21 + attackBonus - targetAC ) * ( 21 + attackBonus - targetAC )) / 400;
         // value limit
         if ( hitChance < 0.0025 ) {

@@ -15,8 +15,10 @@ function createHtml(spanid, text, button1id, inputid, button2id){
         counter++;
         newid = spanid + counter;
         minSpan.setAttribute("id", newid);
+        minSpan.setAttribute("class", "non-edit"+counter)
     }else{
         minSpan.setAttribute("id", newid);
+        minSpan.setAttribute("class", "non-edit"+counter)
     }
     
     //paragraph
@@ -28,7 +30,7 @@ function createHtml(spanid, text, button1id, inputid, button2id){
     minButtonDown.setAttribute("id", button1id+counter);
     minButtonDown.setAttribute("class", "buttons");
     minButtonDown.setAttribute("onclick", "subButtonValue("+"'"+inputid+counter+"'"+")")
-    minButtonDown.textContent = "<";
+    minButtonDown.textContent = "-";
 
     //input
     minInput.setAttribute("type", "text");
@@ -40,7 +42,7 @@ function createHtml(spanid, text, button1id, inputid, button2id){
     minButtonUp.setAttribute("id", button2id+counter);
     minButtonUp.setAttribute("class", "buttons");
     minButtonUp.setAttribute("onclick", "addButtonValue("+"'"+inputid+counter+"'"+")")
-    minButtonUp.textContent = ">";
+    minButtonUp.textContent = "+";
     
     //append
     document.body.appendChild(minSpan);
@@ -61,6 +63,7 @@ function createDropdown(spanid, labelfor, dropdownid, option1, option2, option3)
 
     //span
     span.setAttribute("id", spanid+counter);
+    span.setAttribute("class", "non-edit"+counter)
 
     //paragraph
     para.setAttribute("class", "infotext");
@@ -87,7 +90,7 @@ function createDropdown(spanid, labelfor, dropdownid, option1, option2, option3)
     //append
     document.body.appendChild(span);
     span.appendChild(para);
-    document.body.appendChild(dropdown);
+    span.appendChild(dropdown);
     dropdown.append(label, optiondis, optionstd, optionadv);
 }
 
@@ -98,10 +101,12 @@ function chances(spanid, text, inputid){
     let Chance = document.createElement("INPUT");
 
     span.setAttribute("id", spanid+counter);
+    span.setAttribute("class", "non-edit"+counter)
 
     paragraph.textContent = text;
     Chance.setAttribute("id", inputid+counter);
     Chance.setAttribute("readonly", "true");
+    Chance.setAttribute("class", "readclass")
 
     document.body.appendChild(span);
     span.append(paragraph, Chance);
@@ -116,6 +121,7 @@ function damage(spanid, text, inputid, outputid){
 
     //span
     span.setAttribute("id", spanid+counter)
+    span.setAttribute("class", "non-edit"+counter)
 
     //paragraph
     paragraph.setAttribute("class", "infotext");
@@ -129,6 +135,7 @@ function damage(spanid, text, inputid, outputid){
     readinput.setAttribute("type", "text");
     readinput.setAttribute("id", outputid+counter);
     readinput.setAttribute("readonly", "true");
+    readinput.setAttribute("class", "readclass")
 
     //append
     document.body.appendChild(span);
@@ -139,6 +146,9 @@ function damage(spanid, text, inputid, outputid){
 function hiddenInputs(inputid){
     let span = document.createElement("SPAN");
     let input = document.createElement("INPUT");
+
+    //span
+    span.setAttribute("class", "non-edit"+counter)
 
     //input
     input.setAttribute("id", inputid+counter);
@@ -181,7 +191,7 @@ function dprOutput(tdid){
         row.appendChild(cell);
     }
 }
-
+let internalCounter = 0;
 // call all calculator html element functions with their paramaters
 function addAttack(){
     createHtml("tacSpan", "Target's armor class", "tacButtonDown", "targetAC", "tacButtonUp");
@@ -205,13 +215,19 @@ function addAttack(){
     hiddenInputs("hitChanceOutput");
     hiddenInputs("critChanceOutput");
     dprOutput("damageAvgOutput");
-    initialValues();
+    if(counter>0){
+        [...document.getElementsByClassName('non-edit'+internalCounter)].forEach(el => {
+            el.style.opacity = "0.3";
+        });
+        internalCounter++;
+    }
+
 }
 
 //addattack button and call the addAttack function onclick
 let addAttackButton = document.createElement("BUTTON");
-addAttackButton.textContent = "add attack";
-addAttackButton.setAttribute("onclick", "addAttack();allEventListeners();");
+addAttackButton.textContent = "Add attack";
+addAttackButton.setAttribute("onclick", "addAttack();allEventListeners();initialValues();");
 document.body.appendChild(addAttackButton);
 
 //damage pr round button and output
@@ -229,9 +245,9 @@ let temp;
 function getDamagePerRound(){
     let sum = 0;
     for(var i=0; i<=counter; i++){
-        oneAttackVal = parseInt(document.getElementById("damageAvgOutput"+i).innerText);
+        oneAttackVal = parseFloat(document.getElementById("damageAvgOutput"+i).innerText);
         sum += oneAttackVal;
-        console.log(parseInt(document.getElementById("damageAvgOutput"+i).innerText));
+        console.log(parseFloat(document.getElementById("damageAvgOutput"+i).innerText));
     }
     dmgoutput.innerHTML = sum;
 }
